@@ -1,0 +1,91 @@
+.file-upload {
+  // layout
+  padding: 2px 6px;
+
+  // style
+  border: 1px solid black;
+  border-radius: 5px;
+
+  &:hover {
+    // style
+    background-color: black;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  &-input {
+    // layout
+    display: none;
+  }
+}
+
+.table {
+  // layout
+  width: 100%;
+  overflow: auto;
+
+  // style
+  border: 1px solid black;
+  border-collapse: collapse;
+
+  &-col {
+    &-index {
+      // layout
+      min-width: 25px;
+
+      // style
+      border: 1px solid black;
+    }
+
+    &-policy {
+      // layout
+      min-width: 100px;
+
+      // style
+      border: 1px solid black;
+    }
+  }
+
+  &-header {
+    // style
+    background-color: grey;
+  }
+
+  &-row {
+    // style
+    border: 1px solid black;
+
+    &:nth-child(even) {
+      // style
+      background-color: lightgrey;
+    }
+
+    &:hover {
+      // style
+      background-color: grey;
+      cursor: pointer;
+    }
+
+    &-index {
+      &-cell {
+        // layout
+        padding: 5px;
+        text-align: center;
+
+        // style
+        border: 1px solid black;
+      }
+    }
+
+    &-policy {
+      &-cell {
+        // layout
+        padding: 5px;
+
+        // style
+        border: 1px solid black;
+      }
+    }
+  }
+}

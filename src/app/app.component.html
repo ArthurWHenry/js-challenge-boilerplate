@@ -1,1 +1,28 @@
-<h1>Hello, Kin OCR</h1>
+<h1 style="text-align: center;">Hello, Kin OCR</h1>
+<div>
+  <h2>Upload OCR File</h2>
+  <div>
+    <label class="file-upload" for="file-upload" aria-label="Upload OCR File">File Upload</label>
+    <input id="file-upload" class="file-upload-input" aria-label="Select file to upload" name="file-upload" aria-hidden="true" type="file" (change)="onFileSelected($event)" />
+  </div>
+</div>
+<div>
+  <h2>Policy Numbers</h2>
+  <table aria-label="Table with Policy Numbers" class="table" *ngIf="policyNumbers.length > 0; else noData" >
+    <thead class="table-header" aria-label="Header for Policy data">
+      <tr>
+        <th class="table-col-index"></th>
+        <th class="table-col-policy">Policy #</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="table-row" *ngFor="let policyNumber of policyNumbers; let i = index">
+        <td class="table-row-index-cell">{{ i + 1 }}</td>
+        <td class="table-row-policy-cell">{{ policyNumber }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <ng-template #noData>
+    <p>No policy numbers available.</p>
+  </ng-template>
+</div>
