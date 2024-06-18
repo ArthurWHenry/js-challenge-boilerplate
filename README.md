@@ -13,3 +13,45 @@ All of our applications are using the modern versions of Angular, so feel free t
 Feel free to remove routing or upgrade any of the dependencies if you need to.
 
 Please use the `./sample.csv` file as input into your application.
+
+## Installation
+
+Clone the project
+
+```bash
+  # via SSH
+  git@github.com:ArthurWHenry/js-challenge-boilerplate.git
+
+  # via HTTPS
+  https://github.com/ArthurWHenry/js-challenge-boilerplate.git
+```
+
+Go to project directory
+
+```bash
+  cd js-challenge-boilerplate
+```
+
+Install dependencies
+
+```bash
+  npm install
+```
+
+## Run Locally
+
+If you haven't installed the dependencies yet, please refer to the [Installation](#installation) section for instructions on how to do so.
+
+Start the server
+
+```bash
+  npm run start
+```
+
+## Running Tests
+
+To run tests, run the following command
+
+```bash
+  npm run test
+```
