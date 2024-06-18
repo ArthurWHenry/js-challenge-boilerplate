@@ -7,22 +7,26 @@
   </div>
 </div>
 <div>
-  <h2>Policy Numbers</h2>
-  <table aria-label="Table with Policy Numbers" class="table" *ngIf="policyNumbers.length > 0; else noData" >
-    <thead class="table-header" aria-label="Header for Policy data">
-      <tr>
-        <th class="table-col-index"></th>
-        <th class="table-col-policy">Policy #</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr class="table-row" *ngFor="let policyNumber of policyNumbers; let i = index">
-        <td class="table-row-index-cell">{{ i + 1 }}</td>
-        <td class="table-row-policy-cell">{{ policyNumber }}</td>
-      </tr>
-    </tbody>
-  </table>
-  <ng-template #noData>
-    <p>No policy numbers available.</p>
-  </ng-template>
+  <h2 aria-label="Policy table title">Policy Numbers</h2>
+  <div class="table-container">
+    <table aria-label="Table with Policy Numbers" class="table" *ngIf="policyNumbers.length > 0; else noData" >
+      <thead class="table-header" aria-label="Header for Policy data">
+        <tr>
+          <th class="table-col-index"></th>
+          <th class="table-col-policy">Policy #</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="table-row" *ngFor="let policyNumber of policyNumbers; let i = index">
+          <td class="table-row-index-cell">{{ i + 1 }}</td>
+          <td class="table-row-policy-cell">{{ policyNumber }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <ng-template #noData>
+      <div class="no-data">
+        <p>No policy numbers available.</p>
+      </div>
+    </ng-template>
+  </div>
 </div>
