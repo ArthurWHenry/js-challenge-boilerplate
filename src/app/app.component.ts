@@ -12,7 +12,10 @@ const MAX_FILE_SIZE = 2097152; // 2MB
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
-  policyNumbers: number[] = [];
+  policyNumbers: number[] = [
+    457500000, 664371495, 333333333, 45750800, 555555555, 666666666, 777777777,
+    861100036, 861100036, 123456789,
+  ];
   title: string = 'kin-ocr';
 
   onFileSelected(event: Event): void {
