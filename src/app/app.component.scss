@@ -111,6 +111,14 @@
         font-size: $--font-size-50;
         scroll-snap-align: start;
       }
+
+      &.valid {
+        background-color: $--color-success-100 !important;
+      }
+
+      &.invalid {
+        background-color: $--color-warning-100 !important;
+      }
     }
 
     tr:nth-of-type(2n) {
