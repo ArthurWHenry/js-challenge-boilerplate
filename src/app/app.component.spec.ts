@@ -27,9 +27,7 @@ describe('AppComponent', (): void => {
       TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain(
-      'Hello, Kin OCR'
-    );
+    expect(compiled.querySelector('h1')?.textContent).toContain('Kin OCR');
   });
 
   it('should have a file upload input', (): void => {
@@ -45,7 +43,7 @@ describe('AppComponent', (): void => {
       TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.table-container')).toBeTruthy();
+    expect(compiled.querySelector('.table-wrapper')).toBeTruthy();
   });
 
   it('should display "No policy numbers available" message when table is empty', (): void => {
@@ -53,8 +51,8 @@ describe('AppComponent', (): void => {
       TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.table-container')).toBeTruthy();
-    expect(compiled.querySelector('.table-container')?.textContent).toContain(
+    expect(compiled.querySelector('.table-wrapper')).toBeTruthy();
+    expect(compiled.querySelector('.table-wrapper')?.textContent).toContain(
       'No policy numbers available.'
     );
   });
@@ -171,6 +169,74 @@ describe('AppComponent', (): void => {
 
     // The FileReader should throw an error and the policy numbers should be empty.
     expect(app.onFileSelected).toThrowError();
-    expect(app.policyNumbers.length).toBe(0);
+    expect(app.policies.length).toBe(0);
   });
+});
+
+it('should successfully display the numbers and result of its checksum', (): void => {
+  const fixture: ComponentFixture<AppComponent> =
+    TestBed.createComponent(AppComponent);
+  fixture.detectChanges();
+
+  // Mocking FileReader API since it's event based.
+  spyOn(window as any, 'FileReader').and.returnValue({
+    readAsText: function (file: File): void {
+      this.onload({
+        target: {
+          result:
+            '457500000,664371495,333333333,45750800,555555555,666666666,777777777,861100036,861100036,123456789',
+        },
+      });
+    },
+    onload: null,
+  });
+
+  const compiled = fixture.nativeElement as HTMLElement;
+  const fileInput = compiled.querySelector(
+    '.file-upload-input'
+  ) as HTMLInputElement;
+  const validFile = new File(
+    [
+      '457500000,664371495,333333333,45750800,555555555,666666666,777777777,861100036,861100036,123456789',
+    ],
+    'valid.csv',
+    {
+      type: 'text/csv',
+    }
+  );
+
+  // Create a DataTransfer object to simulate the file input event
+  const dataTransfer = new DataTransfer();
+  dataTransfer.items.add(validFile);
+
+  // Assigning the file to the input element and triggering the upload.
+  fileInput.files = dataTransfer.files;
+  fileInput.dispatchEvent(new Event('change', { bubbles: true }));
+
+  fixture.detectChanges();
+
+  // Verify that the policy numbers are displayed
+  const table: HTMLTableElement | null = compiled.querySelector('table');
+  expect(table).toBeTruthy();
+
+  const noData: Element | null = compiled.querySelector('#noData');
+  expect(noData).toBeFalsy();
+
+  if (!table) {
+    return fail('Table not found');
+  }
+
+  // Verify that the numbers are displayed in the table with their checksum result.
+  const tableRows: NodeListOf<Element> = table.querySelectorAll('tbody tr');
+  expect(tableRows.length).toBe(10);
+  expect(tableRows[0].textContent).toContain('457500000valid');
+  expect(tableRows[1].textContent).toContain('664371495error');
+  expect(tableRows[2].textContent).toContain('333333333error');
+  expect(tableRows[3].textContent).toContain('45750800error');
+  expect(tableRows[4].textContent).toContain('555555555error');
+  expect(tableRows[5].textContent).toContain('666666666error');
+  expect(tableRows[6].textContent).toContain('777777777error');
+  expect(tableRows[7].textContent).toContain('861100036error');
+  expect(tableRows[8].textContent).toContain('861100036error');
+  expect(tableRows[9].textContent).toContain('123456789error');
 });

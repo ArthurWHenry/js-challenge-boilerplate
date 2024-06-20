@@ -2,6 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
+// Helpers
+import { isValidChecksum } from '../helpers';
+
 const MAX_FILE_SIZE = 2097152; // 2MB
 
 @Component({
@@ -12,10 +15,7 @@ const MAX_FILE_SIZE = 2097152; // 2MB
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
-  policyNumbers: number[] = [
-    457500000, 664371495, 333333333, 45750800, 555555555, 666666666, 777777777,
-    861100036, 861100036, 123456789,
-  ];
+  policies: { policyNumber: string; isValid: string }[] = [];
   title: string = 'kin-ocr';
 
   onFileSelected(event: Event): void {
@@ -51,14 +51,21 @@ export class AppComponent {
 
       // Split the contents of the file by new line or comma and cast to number.
       try {
-        this.policyNumbers = contents
+        this.policies = contents
           .split(/[\r\n,]+/)
-          .map((number: string): number => {
+          .map((number: string): { policyNumber: string; isValid: string } => {
             const parsedNumber: number = parseInt(number);
+            // We only want to check if it's a number. We don't want to show
+            // this to the user because if we have a policy number that starts
+            // with 0, it will be removed.
             if (isNaN(parsedNumber)) {
               throw new Error('Invalid number in file.');
             }
-            return parsedNumber;
+            const isValid: boolean = isValidChecksum(number);
+            return {
+              policyNumber: number,
+              isValid: isValid ? 'valid' : 'error',
+            };
           });
       } catch (error) {
         alert(error);

@@ -26,21 +26,25 @@
     <table
       aria-label="Table with Policy Numbers"
       class="table"
-      *ngIf="policyNumbers.length > 0; else noData"
+      *ngIf="policies.length > 0; else noData"
     >
       <thead class="table-header" aria-label="Header for Policy data">
         <tr>
-          <th class="table-col-index"></th>
-          <th class="table-col-policy">Policy #</th>
+          <th></th>
+          <th>Policy #</th>
+          <th>Result</th>
         </tr>
       </thead>
       <tbody>
         <tr
           class="table-row"
-          *ngFor="let policyNumber of policyNumbers; let i = index"
+          *ngFor="let policy of policies; let i = index"
+          [class.valid]="policy.isValid === 'valid'"
+          [class.invalid]="policy.isValid === 'error'"
         >
           <td class="table-row-index-cell">{{ i + 1 }}</td>
-          <td class="table-row-policy-cell">{{ policyNumber }}</td>
+          <td class="table-row-policy-cell">{{ policy.policyNumber }}</td>
+          <td class="table-row-policy-cell">{{ policy.isValid }}</td>
         </tr>
       </tbody>
     </table>
