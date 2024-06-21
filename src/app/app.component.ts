@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, Output } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 // Helpers
 import { isValidChecksum } from '../helpers';
+import { Policy, ResponseId } from '../types';
 
 const MAX_FILE_SIZE = 2097152; // 2MB
 
@@ -15,8 +16,8 @@ const MAX_FILE_SIZE = 2097152; // 2MB
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
-  policies: { policyNumber: string; isValid: string }[] = [];
-  title: string = 'kin-ocr';
+  @Output() policies: { policyNumber: string; isValid: string }[] = [];
+  @Output() title: string = 'kin-ocr';
 
   onFileSelected(event: Event): void {
     const target = event.target as HTMLInputElement;
@@ -75,5 +76,37 @@ export class AppComponent {
 
     reader.readAsText(file);
     return;
+  }
+
+  async submitPolicyNumbers(): Promise<any> {
+    if (!this.policies.length) {
+      window.alert('No policy numbers available.');
+      return;
+    }
+    const response: ResponseId & Policy[] = await fetch(
+      'https://jsonplaceholder.typicode.com/posts',
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          policies: [...this.policies],
+        }),
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      }
+    )
+      .then((response: Response): Promise<ResponseId & Policy[]> => {
+        if (!response.ok) {
+          window.alert('Error sending data to server.');
+          // throw new Error('Error sending data to server.');
+        }
+        return response.json();
+      })
+      .then(
+        (response: ResponseId & Policy[]): ResponseId & Policy[] => response
+      );
+
+    window.alert('Data sent successfully. ID: ' + response.id);
+    return response.id;
   }
 }

@@ -18,7 +18,7 @@
     />
   </div>
 </div>
-<div class="container">
+<div class="container" style="gap: 6px">
   <h2 aria-label="Policy table title" class="container-title">
     Policy Numbers
   </h2>
@@ -50,8 +50,14 @@
     </table>
     <ng-template #noData>
       <div class="no-data">
-        <p>No policy numbers available.</p>
+        <p>Upload a valid CSV file.</p>
       </div>
     </ng-template>
+  </div>
+  <div>
+    <!-- If there is no data, we should disable this button and show the disabled button class. -->
+    <button class="primary-button" (click)="submitPolicyNumbers()">
+      Submit Policy Numbers
+    </button>
   </div>
 </div>
