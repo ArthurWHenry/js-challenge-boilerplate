@@ -240,3 +240,5 @@ it('should successfully display the numbers and result of its checksum', (): voi
   expect(tableRows[8].textContent).toContain('861100036error');
   expect(tableRows[9].textContent).toContain('123456789error');
 });
+
+// TODO: One of the test cases for making sure the POST endpoint works is comparing the returned policy data to the one in the current table/file.
