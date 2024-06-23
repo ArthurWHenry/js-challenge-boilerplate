@@ -1,5 +1,5 @@
 <!-- TODO: I actually need to make sure the dropzone works -->
-<div class="file-uploader__dropzone" role="button">
+<div class="file-uploader__dropzone" role="button" tabindex="0">
   <label
     class="file-uploader__label"
     for="file-uploader"
@@ -37,8 +37,8 @@
       </span>
     </div>
   </label>
-  <!-- TODO: Need the update the accept attribute to accept multiple file types. -->
   <input
+    [accept]="acceptedTypesString"
     aria-label="Select file to upload"
     aria-describedby="file-uploader-hint"
     class="file-uploader__input"

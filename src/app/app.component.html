@@ -5,9 +5,10 @@
   <h2 style="line-height: 0">Upload OCR File</h2>
   <app-file-uploader
     title="Drop your file here, or browse."
-    [acceptedTypes]="['csv']"
+    [acceptedTypes]="['.csv']"
     [fileUploadHandler]="handleFileUpload"
   ></app-file-uploader>
+  <app-alert></app-alert>
   <app-policy-table
     [tableData]="policies"
     style="width: 100%"

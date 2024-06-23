@@ -2,7 +2,11 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
+// API
+import { postPolicyNumbers } from '../api/submit-policies';
+
 // Components
+import { AlertComponent } from './alert/alert.component';
 import { ButtonComponent } from './button/button.component';
 import { FileUploaderComponent } from './file-uploader/file-uploader.component';
 import { PolicyTableComponent } from './policy-table/policy-table.component';
@@ -12,7 +16,9 @@ import { isValidChecksum } from '../helpers';
 
 // Types
 import { Policy, PostResponse } from '../types';
-import { postPolicyNumbers } from '../api/submit-policies';
+
+// Services
+import { AlertService } from './alert/alert.service';
 
 @Component({
   selector: 'app-root',
@@ -20,6 +26,7 @@ import { postPolicyNumbers } from '../api/submit-policies';
   imports: [
     RouterOutlet,
     CommonModule,
+    AlertComponent,
     ButtonComponent,
     FileUploaderComponent,
     PolicyTableComponent,
@@ -28,6 +35,8 @@ import { postPolicyNumbers } from '../api/submit-policies';
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
+  constructor(private alertService: AlertService) {}
+
   columns: string[] = ['', 'Policy #', 'Result'];
   private _policies: Policy[] = [];
   title: string = 'kin-ocr';
@@ -46,6 +55,10 @@ export class AppComponent {
   // Clear the policies array
   clearPolicyNumbers: () => void = (): void => {
     this.policies = [];
+    this.alertService.showAlert(
+      'Data cleared. Please upload a new file.',
+      'information'
+    );
   };
 
   // Handle the file upload
@@ -75,15 +88,16 @@ export class AppComponent {
           });
         this.policies = [...parsedNumbers];
       } catch (error) {
-        alert(error);
+        this.alertService.showAlert('Error reading file.', 'warning');
       }
     };
 
     reader.onerror = (error: ProgressEvent<FileReader>): void => {
-      alert('Error reading file.');
+      this.alertService.showAlert('Error reading file.', 'warning');
     };
 
     reader.readAsText(file);
+    this.alertService.showAlert('Successfully read file.', 'success');
   };
 
   submitPolicyNumbers: () => Promise<any> = async (): Promise<any> => {
@@ -93,10 +107,16 @@ export class AppComponent {
 
     if (response.status === 'error' || !response.responseId) {
       alert('Error submitting policy numbers.');
+      this.alertService.showAlert(
+        'Error submitting policy numbers.',
+        'warning'
+      );
       return;
     }
 
-    alert(`Policy numbers submitted successfully. ${response.responseId}`);
-    return;
+    this.alertService.showAlert(
+      `Policy numbers submitted successfully. (id: ${response.responseId})`,
+      'success'
+    );
   };
 }

@@ -1,4 +1,22 @@
 /**
+ * Alert type
+ *
+ * @remarks This type is used to represent an alert message.
+ */
+export type Alert = {
+  message: string;
+  timeout: number;
+  variant: AlertVariant;
+};
+
+/**
+ * Alert variants type
+ *
+ * @remarks This type is used to represent the different alert variants.
+ */
+export type AlertVariant = 'success' | 'warning' | 'error' | 'information';
+
+/**
  * Policy type
  *
  * @remarks This type is used to represent a policy record in the table.

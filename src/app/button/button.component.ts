@@ -14,7 +14,7 @@ export class ButtonComponent {
   @Input() variant: 'primary' | 'secondary' = 'primary';
   classes: string = `${this.variant}-button`;
 
-  ngOnChanges(): void {
+  ngOnInit(): void {
     // Update the classes property when the variant changes
     this.classes = `${this.variant}-button`;
   }

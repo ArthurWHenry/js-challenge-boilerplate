@@ -3,7 +3,12 @@ import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 
 // Constants
 import { MAX_FILE_SIZE } from '../../constants';
+
+// Helpers
 import { formatBytes } from '../../helpers';
+
+// Services
+import { AlertService } from '../alert/alert.service';
 
 @Component({
   selector: 'app-file-uploader',
@@ -13,36 +18,46 @@ import { formatBytes } from '../../helpers';
   styleUrl: './file-uploader.component.scss',
 })
 export class FileUploaderComponent {
-  @Input() title: string = 'Upload a file';
-  @Input() acceptedTypes: string[] = ['csv'];
-  @Input() fileUploadHandler: (file: File) => void = () => {};
+  constructor(private alertService: AlertService) {}
 
+  @Input() acceptedTypes: string[] = ['.csv'];
+  @Input() fileUploadHandler: (file: File) => void = () => {};
+  @Input() title: string = 'Upload a file';
   maxSize: number = MAX_FILE_SIZE;
   maxSizeString: string = formatBytes({ bytes: this.maxSize });
+  acceptedTypesString: string = '.csv';
+
+  ngOnInit(): void {
+    this.acceptedTypesString = this.acceptedTypes.join(', ');
+  }
 
   onFileUpload(event: Event): void {
     const target = event.target as HTMLInputElement;
 
     if (!target) {
-      alert('Error reading file.');
-      return;
+      return this.alertService.showAlert('Error reading file.', 'information');
     }
 
     const file: File | undefined = target.files?.[0];
 
     if (!file) {
-      alert('No file selected.');
-      return;
+      return this.alertService.showAlert('No file selected.', 'information');
     }
 
     if (file.type !== 'text/csv') {
-      alert('Invalid file type. Please select a CSV file.');
-      return;
+      return this.alertService.showAlert(
+        'Invalid file type. Please select a CSV file.',
+        'warning'
+      );
     }
 
     if (file.size >= MAX_FILE_SIZE) {
-      alert('File size exceeds 2MB. Please select a smaller file.');
-      return;
+      return this.alertService.showAlert(
+        `File size exceeds ${formatBytes({
+          bytes: MAX_FILE_SIZE,
+        })}. Please select a smaller file.`,
+        'warning'
+      );
     }
 
     if (!this.fileUploadHandler) {

@@ -13,7 +13,7 @@ export function isValidChecksum(number: string): boolean {
   let sum: number = 0;
 
   for (let i: number = 0; i < digits.length; i++) {
-    sum += digits[i] * (i + 1); // Multiply each digit by its position (1-indexed)
+    sum += digits[i] * (digits.length - i); // Multiply each digit by its position (1-indexed)
   }
 
   return sum % 11 === 0; // Check if the sum is divisible by 11

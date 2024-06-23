@@ -1,0 +1,52 @@
+@import "../../scss/variables.scss";
+
+.alert {
+  // layout
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  max-width: 100%;
+  position: relative;
+
+  // style
+  background: $--color-neutral-white;
+  border: 2px solid;
+  border-color: $--color-secondary-300;
+  border-left: 6px solid;
+  border-radius: $--border-radius-300;
+  color: $--color-secondary-300;
+
+  &__message {
+    display: flex;
+    flex-direction: column;
+    gap: $--space-100;
+    padding: $--space-200;
+
+    // style
+    color: $--color-neutral-black;
+  }
+
+  &__information {
+    // style
+    border-color: $--color-secondary-300;
+    color: $--color-secondary-300;
+  }
+
+  &__success {
+    // style
+    border-color: $--color-success-400;
+    color: $--color-success-400;
+  }
+
+  &__warning {
+    // style
+    border-color: $--color-primary-500;
+    color: $--color-primary-500;
+  }
+
+  &__error {
+    // style
+    border-color: $--color-warning;
+    color: $--color-warning;
+  }
+}
