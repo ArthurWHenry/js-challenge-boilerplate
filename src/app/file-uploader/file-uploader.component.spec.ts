@@ -2,11 +2,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FileUploaderComponent } from './file-uploader.component';
 
-describe('FileUploaderComponent', () => {
+describe('FileUploaderComponent', (): void => {
   let component: FileUploaderComponent;
   let fixture: ComponentFixture<FileUploaderComponent>;
 
-  beforeEach(async () => {
+  beforeEach(async (): Promise<void> => {
     await TestBed.configureTestingModule({
       imports: [FileUploaderComponent],
     }).compileComponents();
@@ -25,7 +25,7 @@ describe('FileUploaderComponent', () => {
   });
 
   it('should have default accepted types', (): void => {
-    expect(component.acceptedTypes).toEqual(['csv']);
+    expect(component.acceptedTypes).toEqual(['.csv']);
   });
 
   it('should have default file upload handler', (): void => {
@@ -39,7 +39,7 @@ describe('FileUploaderComponent', () => {
   });
 
   it('should update accepted types', (): void => {
-    const newAcceptedTypes: string[] = ['csv', 'txt'];
+    const newAcceptedTypes: string[] = ['.csv', '.txt'];
     component.acceptedTypes = newAcceptedTypes;
     expect(component.acceptedTypes).toEqual(newAcceptedTypes);
   });

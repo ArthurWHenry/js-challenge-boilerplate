@@ -106,11 +106,7 @@ export class AppComponent {
     });
 
     if (response.status === 'error' || !response.responseId) {
-      alert('Error submitting policy numbers.');
-      this.alertService.showAlert(
-        'Error submitting policy numbers.',
-        'warning'
-      );
+      this.alertService.showAlert('Error submitting policy numbers.', 'error');
       return;
     }
 

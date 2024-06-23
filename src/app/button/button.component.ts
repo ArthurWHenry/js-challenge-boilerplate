@@ -1,5 +1,8 @@
 import { Component, Input } from '@angular/core';
 
+// Types
+import type { ButtonVariant } from '../../types';
+
 @Component({
   selector: 'app-button',
   standalone: true,
@@ -9,13 +12,13 @@ import { Component, Input } from '@angular/core';
 })
 export class ButtonComponent {
   @Input() disabled: boolean = false;
-  @Input() onClick: () => void = () => {};
+  @Input() onClick: () => void = (): void => {};
   @Input() text: string = 'Submit';
-  @Input() variant: 'primary' | 'secondary' = 'primary';
-  classes: string = `${this.variant}-button`;
+  @Input() variant: ButtonVariant = 'primary';
+  classes: string = `button button__${this.variant}`;
 
   ngOnInit(): void {
     // Update the classes property when the variant changes
-    this.classes = `${this.variant}-button`;
+    this.classes = `button button__${this.variant}`;
   }
 }

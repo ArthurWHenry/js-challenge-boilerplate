@@ -1,50 +1,48 @@
 @import "../../scss/variables.scss";
 
-.primary-button {
-  // style
-  background-color: $--color-secondary;
-  border: none;
+.button {
   border-radius: $--border-radius-200;
-  color: $--color-neutral-white;
   font-size: $--font-size-100;
   font-weight: $--font-weight-500;
   padding: $--space-200 $--space-300;
+  width: 100%;
 
-  &:hover {
-    // style
-    background-color: #126568;
-    cursor: pointer;
-  }
-
-  &:disabled {
-    // style
-    background-color: $--color-neutral-300;
-    color: $--color-neutral-black;
-    cursor: not-allowed;
-  }
-}
-
-.secondary-button {
-  // style
-  background-color: $--color-neutral-white;
-  border: 1px solid $--color-secondary;
-  border-radius: $--border-radius-200;
-  color: $--color-secondary;
-  font-size: $--font-size-100;
-  font-weight: $--font-weight-500;
-  padding: $--space-200 $--space-300;
-
-  &:hover {
-    // style
-    background-color: $--color-secondary-100;
-    cursor: pointer;
-  }
-
-  &:disabled {
-    // style
-    background-color: $--color-neutral-300;
+  &__primary {
+    background-color: $--color-secondary;
     border: none;
-    color: $--color-neutral-black;
-    cursor: not-allowed;
+    color: $--color-neutral-white;
+
+    &:hover {
+      // style
+      background-color: #126568;
+      cursor: pointer;
+    }
+
+    &:disabled {
+      // style
+      background-color: $--color-neutral-300;
+      color: $--color-neutral-black;
+      cursor: not-allowed;
+    }
+  }
+
+  &__secondary {
+    background-color: $--color-neutral-white;
+    border: 1px solid $--color-secondary;
+    color: $--color-secondary;
+
+    &:hover {
+      // style
+      background-color: $--color-secondary-100;
+      cursor: pointer;
+    }
+
+    &:disabled {
+      // style
+      background-color: $--color-neutral-300;
+      border: none;
+      color: $--color-neutral-black;
+      cursor: not-allowed;
+    }
   }
 }

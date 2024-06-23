@@ -27,6 +27,6 @@ describe('AppComponent', (): void => {
       TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Kin OCR');
+    expect(compiled.querySelector('h1')?.textContent).toContain('kin.OCR');
   });
 });

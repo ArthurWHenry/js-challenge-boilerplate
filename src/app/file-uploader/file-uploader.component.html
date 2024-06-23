@@ -1,5 +1,13 @@
-<!-- TODO: I actually need to make sure the dropzone works -->
-<div class="file-uploader__dropzone" role="button" tabindex="0">
+<div
+  id="dropzone"
+  class="file-uploader__dropzone"
+  role="button"
+  tabindex="0"
+  (dragover)="onDragOver($event)"
+  (dragenter)="onDragEnter($event)"
+  (dragleave)="onDragLeave($event)"
+  (drop)="onDrop($event)"
+>
   <label
     class="file-uploader__label"
     for="file-uploader"

@@ -17,6 +17,13 @@ export type Alert = {
 export type AlertVariant = 'success' | 'warning' | 'error' | 'information';
 
 /**
+ * Button variant type
+ *
+ * @remarks This type is used to represent the different button variants.
+ */
+export type ButtonVariant = 'primary' | 'secondary';
+
+/**
  * Policy type
  *
  * @remarks This type is used to represent a policy record in the table.

@@ -31,6 +31,32 @@ export class FileUploaderComponent {
     this.acceptedTypesString = this.acceptedTypes.join(', ');
   }
 
+  isFileValid(file: File): boolean {
+    if (!file) {
+      return false;
+    }
+
+    if (file.size >= MAX_FILE_SIZE) {
+      this.alertService.showAlert(
+        `File size exceeds ${formatBytes({
+          bytes: MAX_FILE_SIZE,
+        })}. Please select a smaller file.`,
+        'warning'
+      );
+      return false;
+    }
+
+    if (!this.acceptedTypes.includes(file.type)) {
+      this.alertService.showAlert(
+        `Invalid file type. Please select a file of type ${this.acceptedTypesString}.`,
+        'warning'
+      );
+      return false;
+    }
+
+    return true;
+  }
+
   onFileUpload(event: Event): void {
     const target = event.target as HTMLInputElement;
 
@@ -73,6 +99,62 @@ export class FileUploaderComponent {
     const input = document.getElementById('file-uploader') as HTMLInputElement;
     if (input) {
       input.value = '';
+    }
+  }
+
+  onDragOver(event: DragEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
+  onDragEnter(event: DragEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+
+    // Highlight the drop area
+    document.getElementById('dropzone')?.classList.add('drag-over');
+  }
+
+  onDragLeave(event: DragEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+
+    // Remove highlight from the drop area
+    document.getElementById('dropzone')?.classList.remove('drag-over');
+  }
+
+  onDrop(event: DragEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+
+    // Remove highlight from the drop area
+    document.getElementById('dropzone')?.classList.remove('drag-over');
+
+    if (event.dataTransfer && event.dataTransfer.files) {
+      const file = event.dataTransfer.files[0];
+
+      if (!file) {
+        return this.alertService.showAlert('No file selected.', 'information');
+      }
+
+      if (file.type !== 'text/csv') {
+        return this.alertService.showAlert(
+          'Invalid file type. Please select a CSV file.',
+          'warning'
+        );
+      }
+
+      if (file.size >= MAX_FILE_SIZE) {
+        return this.alertService.showAlert(
+          `File size exceeds ${formatBytes({
+            bytes: MAX_FILE_SIZE,
+          })}. Please select a smaller file.`,
+          'warning'
+        );
+      }
+
+      // Use your existing file validation and upload logic here
+      this.fileUploadHandler(file);
     }
   }
 }

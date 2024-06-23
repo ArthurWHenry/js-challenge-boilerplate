@@ -19,6 +19,10 @@
     border-radius: 0.5rem;
     color: $--color-neutral-black;
     width: 100%;
+
+    &.drag-over {
+      background-color: $--color-neutral-300;
+    }
   }
 
   &__hint {

@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ButtonComponent } from './button.component';
 
-describe('ButtonComponent', () => {
+describe('ButtonComponent', (): void => {
   let component: ButtonComponent;
   let fixture: ComponentFixture<ButtonComponent>;
 
-  beforeEach(async () => {
+  beforeEach(async (): Promise<void> => {
     await TestBed.configureTestingModule({
       imports: [ButtonComponent],
     }).compileComponents();
@@ -37,7 +37,7 @@ describe('ButtonComponent', () => {
   it('should render the button with the correct variant class', (): void => {
     const buttonElement: HTMLElement =
       fixture.nativeElement.querySelector('button');
-    const expectedClass = 'primary-button';
+    const expectedClass = 'button__primary';
     expect(buttonElement.classList.contains(expectedClass)).toBeTruthy();
   });
 
