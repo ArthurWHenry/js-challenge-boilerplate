@@ -1,50 +1,55 @@
 import { CommonModule } from '@angular/common';
-import { Component, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+
+// Components
+import { ButtonComponent } from './button/button.component';
+import { FileUploaderComponent } from './file-uploader/file-uploader.component';
+import { PolicyTableComponent } from './policy-table/policy-table.component';
 
 // Helpers
 import { isValidChecksum } from '../helpers';
-import { Policy, ResponseId } from '../types';
 
-const MAX_FILE_SIZE = 2097152; // 2MB
+// Types
+import { Policy, PostResponse } from '../types';
+import { postPolicyNumbers } from '../api/submit-policies';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CommonModule],
+  imports: [
+    RouterOutlet,
+    CommonModule,
+    ButtonComponent,
+    FileUploaderComponent,
+    PolicyTableComponent,
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
-  @Output() policies: { policyNumber: string; isValid: string }[] = [];
-  @Output() title: string = 'kin-ocr';
+  columns: string[] = ['', 'Policy #', 'Result'];
+  private _policies: Policy[] = [];
+  title: string = 'kin-ocr';
+  submitButtonDisabled: boolean = true;
 
-  onFileSelected(event: Event): void {
-    const target = event.target as HTMLInputElement;
+  get policies(): Policy[] {
+    return this._policies;
+  }
 
-    if (!target) {
-      alert('Error reading file.');
-      return;
-    }
+  set policies(value: Policy[]) {
+    this._policies = value;
+    // Update submitButtonDisabled based on the new policies array
+    this.submitButtonDisabled = this._policies.length === 0;
+  }
 
-    const file: File | undefined = target.files?.[0];
+  // Clear the policies array
+  clearPolicyNumbers: () => void = (): void => {
+    this.policies = [];
+  };
 
-    if (!file) {
-      alert('No file selected.');
-      return;
-    }
-
-    if (file.type !== 'text/csv') {
-      alert('Invalid file type. Please select a CSV file.');
-      return;
-    }
-
-    // If file is of 2MB or more, alert the user and return.
-    if (file.size >= MAX_FILE_SIZE) {
-      alert('File size exceeds 2MB. Please select a smaller file.');
-      return;
-    }
-
+  // Handle the file upload
+  handleFileUpload: (file: File) => void = (file: File): void => {
     const reader = new FileReader();
 
     reader.onload = (e: ProgressEvent<FileReader>): void => {
@@ -52,7 +57,7 @@ export class AppComponent {
 
       // Split the contents of the file by new line or comma and cast to number.
       try {
-        this.policies = contents
+        const parsedNumbers: Policy[] = contents
           .split(/[\r\n,]+/)
           .map((number: string): { policyNumber: string; isValid: string } => {
             const parsedNumber: number = parseInt(number);
@@ -68,45 +73,30 @@ export class AppComponent {
               isValid: isValid ? 'valid' : 'error',
             };
           });
+        this.policies = [...parsedNumbers];
       } catch (error) {
         alert(error);
-        return;
       }
     };
 
-    reader.readAsText(file);
-    return;
-  }
+    reader.onerror = (error: ProgressEvent<FileReader>): void => {
+      alert('Error reading file.');
+    };
 
-  async submitPolicyNumbers(): Promise<any> {
-    if (!this.policies.length) {
-      window.alert('No policy numbers available.');
+    reader.readAsText(file);
+  };
+
+  submitPolicyNumbers: () => Promise<any> = async (): Promise<any> => {
+    const response: PostResponse = await postPolicyNumbers({
+      policies: this.policies,
+    });
+
+    if (response.status === 'error' || !response.responseId) {
+      alert('Error submitting policy numbers.');
       return;
     }
-    const response: ResponseId & Policy[] = await fetch(
-      'https://jsonplaceholder.typicode.com/posts',
-      {
-        method: 'POST',
-        body: JSON.stringify({
-          policies: [...this.policies],
-        }),
-        headers: {
-          'Content-type': 'application/json; charset=UTF-8',
-        },
-      }
-    )
-      .then((response: Response): Promise<ResponseId & Policy[]> => {
-        if (!response.ok) {
-          window.alert('Error sending data to server.');
-          // throw new Error('Error sending data to server.');
-        }
-        return response.json();
-      })
-      .then(
-        (response: ResponseId & Policy[]): ResponseId & Policy[] => response
-      );
 
-    window.alert('Data sent successfully. ID: ' + response.id);
-    return response.id;
-  }
+    alert(`Policy numbers submitted successfully. ${response.responseId}`);
+    return;
+  };
 }

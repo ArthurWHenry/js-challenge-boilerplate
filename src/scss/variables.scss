@@ -2,25 +2,37 @@
 $--space-100: 8px;
 $--space-200: 12px;
 $--space-300: 16px;
+$--space-400: 24px;
+$--space-500: 32px;
+$--space-600: 48px;
 
 // Font Sizes
+$--font-size-0: 0.75rem;
 $--font-size-50: 0.875rem;
 $--font-size-100: 1rem;
 
 // Font Weight
 $--font-weight-400: 400;
+$--font-weight-500: 500;
 $--font-weight-black: 700;
 
 // Colors
+$--color-neutral-100: #fafafa;
 $--color-neutral-200: #f7f7f7;
 $--color-neutral-300: #eeeeee;
 $--color-neutral-400: #dbdddb;
-$--color-neutral-black: #242221;
 $--color-success-100: #e6fae8;
 $--color-warning-100: #fae6e8;
-
 $--color-primary-100: #fbf8f3;
 $--color-secondary: #167c80;
+$--color-secondary-100: #e8f2f3;
 $--color-neutral-white: #ffffff;
+$--color-neutral-black: #242221;
 
+// Border
 $--border-radius-200: 4px;
+
+// Line Height
+$--line-height-100: 1.125;
+$--line-height-200: 1.25;
+$--line-height-300: 1.625;

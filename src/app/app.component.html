@@ -1,63 +1,29 @@
-<div class="header">
+<div>
   <h1 style="text-align: center">Kin OCR</h1>
 </div>
 <div class="container">
-  <h2 class="container-title">Upload OCR File</h2>
-  <div class="file-upload-wrapper">
-    <label class="file-upload" for="file-upload" aria-label="Upload OCR File">
-      File Upload
-    </label>
-    <input
-      aria-label="Select file to upload"
-      aria-hidden="true"
-      class="file-upload-input"
-      id="file-upload"
-      name="file-upload"
-      type="file"
-      (change)="onFileSelected($event)"
-    />
-  </div>
-</div>
-<div class="container" style="gap: 6px">
-  <h2 aria-label="Policy table title" class="container-title">
-    Policy Numbers
-  </h2>
-  <div class="table-wrapper">
-    <table
-      aria-label="Table with Policy Numbers"
-      class="table"
-      *ngIf="policies.length > 0; else noData"
-    >
-      <thead class="table-header" aria-label="Header for Policy data">
-        <tr>
-          <th></th>
-          <th>Policy #</th>
-          <th>Result</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          class="table-row"
-          *ngFor="let policy of policies; let i = index"
-          [class.valid]="policy.isValid === 'valid'"
-          [class.invalid]="policy.isValid === 'error'"
-        >
-          <td class="table-row-index-cell">{{ i + 1 }}</td>
-          <td class="table-row-policy-cell">{{ policy.policyNumber }}</td>
-          <td class="table-row-policy-cell">{{ policy.isValid }}</td>
-        </tr>
-      </tbody>
-    </table>
-    <ng-template #noData>
-      <div class="no-data">
-        <p>Upload a valid CSV file.</p>
-      </div>
-    </ng-template>
-  </div>
-  <div>
-    <!-- If there is no data, we should disable this button and show the disabled button class. -->
-    <button class="primary-button" (click)="submitPolicyNumbers()">
-      Submit Policy Numbers
-    </button>
+  <h2 style="line-height: 0">Upload OCR File</h2>
+  <app-file-uploader
+    title="Drop your file here, or browse."
+    [acceptedTypes]="['csv']"
+    [fileUploadHandler]="handleFileUpload"
+  ></app-file-uploader>
+  <app-policy-table
+    [tableData]="policies"
+    style="width: 100%"
+  ></app-policy-table>
+  <div class="button-group">
+    <app-button
+      [disabled]="submitButtonDisabled"
+      [variant]="'primary'"
+      [text]="'Submit Policy Numbers'"
+      [onClick]="submitPolicyNumbers"
+    ></app-button>
+    <app-button
+      [disabled]="submitButtonDisabled"
+      [variant]="'secondary'"
+      [text]="'Clear Data'"
+      [onClick]="clearPolicyNumbers"
+    ></app-button>
   </div>
 </div>

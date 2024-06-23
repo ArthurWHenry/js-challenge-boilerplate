@@ -1,0 +1,88 @@
+@import "../../scss/variables.scss";
+
+.table {
+  // layout
+  width: 100%;
+
+  // style
+  border-collapse: collapse;
+
+  thead {
+    // layout
+    text-align: left;
+
+    // style
+    background-color: $--color-neutral-200;
+
+    tr th {
+      // layout
+      padding: $--space-200 $--space-300;
+      position: sticky;
+      top: 0;
+      z-index: 2;
+
+      // style
+      background-color: $--color-neutral-200;
+      border-top: 1px solid $--color-neutral-400;
+      border-bottom: 1px solid $--color-neutral-400;
+      color: var(--color-neutral-black);
+      font-size: $--font-size-50;
+      font-weight: $--font-weight-black;
+      line-height: var(--line-height-200);
+      scroll-snap-align: start;
+    }
+  }
+
+  tbody {
+    tr {
+      // layout
+      text-align: left;
+      vertical-align: middle;
+
+      // style
+      background: inherit;
+
+      td {
+        // layout
+        padding: $--space-100 $--space-300;
+
+        // style
+        border-bottom: 1px solid $--color-neutral-300;
+        font-size: $--font-size-50;
+        scroll-snap-align: start;
+      }
+
+      // Combine hover states for .valid and .invalid
+      &.valid,
+      &.invalid {
+        &:hover {
+          background-color: $--color-primary-100;
+        }
+      }
+
+      &.valid {
+        background-color: $--color-success-100;
+      }
+
+      &.invalid {
+        background-color: $--color-warning-100;
+      }
+    }
+  }
+
+  &__no-data {
+    // layout
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+  }
+
+  &__wrapper {
+    // layout
+    height: 404px;
+    width: 100%;
+    overflow: auto;
+  }
+}

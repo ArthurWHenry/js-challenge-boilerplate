@@ -16,3 +16,15 @@ export type Policy = {
 export type ResponseId = {
   id: string;
 };
+
+/**
+ * SubmitPolicyResponse type
+ *
+ * @remarks This type is used to represent the response from the POST request.
+ */
+export type PostResponse = {
+  status: string;
+  code: number | null;
+  responseId: string | null;
+  data: Policy[] | null;
+};

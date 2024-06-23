@@ -18,3 +18,29 @@ export function isValidChecksum(number: string): boolean {
 
   return sum % 11 === 0; // Check if the sum is divisible by 11
 }
+
+/**
+ * Format bytes to a human-readable string.
+ * @param {number} bytes - The number of bytes.
+ * @param {number} [decimals=2] - The number of decimal places to include.
+ * @returns {string} The formatted string.
+ *
+ * @example
+ * ```typescript
+ * formatBytes({ bytes: 1024 }); // '1kb'
+ * ```
+ */
+export function formatBytes({
+  bytes,
+  decimals = 2,
+}: {
+  bytes: number;
+  decimals?: number;
+}): string {
+  if (bytes === 0) return '0b';
+  const k = 1024;
+  const dm: number = decimals < 0 ? 0 : decimals;
+  const sizes: string[] = ['b', 'kb', 'mb', 'gb', 'tb'];
+  const i: number = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + sizes[i];
+}

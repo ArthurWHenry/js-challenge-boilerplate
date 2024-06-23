@@ -1,0 +1,50 @@
+<!-- TODO: I actually need to make sure the dropzone works -->
+<div class="file-uploader__dropzone" role="button">
+  <label
+    class="file-uploader__label"
+    for="file-uploader"
+    aria-label="Upload OCR File"
+  >
+    <!-- File upload icon -->
+    <svg
+      class="file-uploader__icon"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 22 22"
+    >
+      <defs></defs>
+      <g
+        fill="none"
+        fill-rule="evenodd"
+        stroke="#167C80"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+      >
+        <path
+          d="M21 14.33333v4.44445C21 20.00508 20.00508 21 18.77778 21H3.22222C1.99492 21 1 20.00508 1 18.77778v-4.44445M16.55556 6.55556L11 1 5.44444 6.55556M11 1v13.33333"
+        ></path>
+      </g>
+    </svg>
+    <span class="file-uploader__title"
+      >Drop your file here, or <u>browse</u>.</span
+    >
+    <div class="file-uploader__hint">
+      max file size: <strong>{{ maxSizeString }}</strong> | supported file
+      types:
+      <span *ngFor="let type of acceptedTypes; let isLast = last">
+        <strong>{{ type }}</strong
+        ><ng-container *ngIf="!isLast">, </ng-container>
+      </span>
+    </div>
+  </label>
+  <!-- TODO: Need the update the accept attribute to accept multiple file types. -->
+  <input
+    aria-label="Select file to upload"
+    aria-describedby="file-uploader-hint"
+    class="file-uploader__input"
+    id="file-uploader"
+    name="file-uploader"
+    type="file"
+    (change)="onFileUpload($event)"
+  />
+</div>
