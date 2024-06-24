@@ -1,8 +1,17 @@
 # KinOcr
 
+## Table of Contents
+
+- [Project Overview](#project-overview)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Running the Application](#running-the-application)
+- [Running Tests](#running-tests)
+- [Using the Sample CSV](#using-the-sample-csv)
+
 ## Project Overview
 
-This project is designed to read a CSV file (please refer to the [Using the Sample CSV](#using-the-sample-csv) section) with policy numbers. After reading the policy numbers from the file, the no data message will now show a table with the policy numbers and an additional column that shows a result column that shows the validity of that policy number.
+This project is designed to read a CSV file (please refer to the [Using the Sample CSV](#using-the-sample-csv) section) with policy numbers. When reading numbers from a file, a table will show with the row number, policy number, and the validity of the respective policy number.
 
 ## Prerequisites
 
@@ -11,7 +20,7 @@ Before you begin, ensure you have met the following requirements:
 - Node.js (16.14.0^)
 - npm (8^)
 
-Once you have Node.js and npm installed, install the Angular CLI tool globally on your system:
+Once you have Node.js and npm installed, install the Angular CLI tool globally using the terminal:
 
 ```bash
 npm install -g @angular/cli
@@ -53,12 +62,24 @@ To start the server, run:
 
 ## Running Tests
 
-The project includes various tests making sure that the individual components are working and the over functionality of the application is working. To run these tests, execute:
+The project includes a comprehensive test suite making sure that the individual components are working and the overall functionality of the application is working
+
+### Prerequisites for Running Tests
+
+Ensure all project dependencies are installed by following the [Installation](#installation) section.
+
+### How to Run Tests
+
+To run all tests, execute the following command in the terminal:
 
 ```bash
   npm run test
 ```
 
+### Interpreting Test Results
+
+After running the tests, you will see an output in the terminal indicating which tests passed and which failed. For failed tests, a detailed error message will be provided to help diagnose the issue.
+
 ## Using the Sample CSV
 
-To use the `sample.csv` file with the application, after you've set up your local environment, you can either drag and drop the file into the dropzone or click the dropzone to select the file.
+To use the `sample.csv` file with the application, after setting up the local environment, you can either drag and drop the file into the dropzone or click the dropzone to select the file.
