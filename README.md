@@ -11,11 +11,11 @@
 
 ## Project Overview
 
-This project is designed to read a CSV file (please refer to the [Using the Sample CSV](#using-the-sample-csv) section) with policy numbers. When reading numbers from a file, a table will show with the row number, policy number, and the validity of the respective policy number.
+This project is designed to read a [CSV](#using-the-sample-csv) file with policy numbers. When reading numbers from a file, a table will show with the row number, policy number, and the validity of the respective policy number.
 
 ## Prerequisites
 
-Before you begin, ensure you have met the following requirements:
+Before you begin, ensure you installed the following requirements:
 
 - Node.js (16.14.0^)
 - npm (8^)
@@ -62,7 +62,7 @@ To start the server, run:
 
 ## Running Tests
 
-The project includes a comprehensive test suite making sure that the individual components are working and the overall functionality of the application is working
+The project includes a comprehensive test suite making sure that the individual components are working and the overall functionality of the application is working.
 
 ### Prerequisites for Running Tests
 
@@ -82,4 +82,13 @@ After running the tests, you will see an output in the terminal indicating which
 
 ## Using the Sample CSV
 
-To use the `sample.csv` file with the application, after setting up the local environment, you can either drag and drop the file into the dropzone or click the dropzone to select the file.
+To use the `sample.csv` file with the application, after setting up the [local environment](#installation), you can either drag and drop the file into the dropzone or click the dropzone to select the file.
+
+## Future Improvements
+
+- A tool that allows the user to check a single policy number for checksum validity
+- Sorting each column so we can sort the table based on row number, policy number, or result
+- We can add a section to manually add policy numbers to an existing or new list
+- Adding edit and delete features to the end of the table so that users can make a policy number valid or remove invalid ones
+- In addition to the previous point, we can add an export button to download the updated policy numbers for the user to keep
+- A search bar at the top of the table where we can look for a specific policy number, or policy numbers with the same prefix
