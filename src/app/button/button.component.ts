@@ -15,7 +15,15 @@ export class ButtonComponent {
   @Input() disabled: boolean = false;
   @Input() onClick: () => void = (): void => {};
   @Input() text: string = 'Submit';
-  @Input() variant: ButtonVariant = 'primary';
+  private _variant: ButtonVariant = 'primary';
+  get variant(): ButtonVariant {
+    return this._variant;
+  }
+  @Input()
+  set variant(value: ButtonVariant) {
+    this._variant = value;
+    this.classes = `button button__${this.variant}`;
+  }
   classes: string = `button button__${this.variant}`;
 
   ngOnInit(): void {

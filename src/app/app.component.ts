@@ -83,7 +83,9 @@ export class AppComponent {
         'Invalid number exists in your file.',
         'warning'
       );
+      return;
     }
+    this.alertService.showAlert('File uploaded successfully.', 'success');
   };
 
   // Parse the policies from the file contents
