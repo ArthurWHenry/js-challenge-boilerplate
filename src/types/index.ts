@@ -3,11 +3,11 @@
  *
  * @remarks This type is used to represent an alert message.
  */
-export type Alert = {
+export interface Alert {
   message: string;
   timeout: number;
   variant: AlertVariant;
-};
+}
 
 /**
  * Alert variants type
@@ -28,28 +28,28 @@ export type ButtonVariant = 'primary' | 'secondary';
  *
  * @remarks This type is used to represent a policy record in the table.
  */
-export type Policy = {
+export interface Policy {
   isValid: string;
   policyNumber: string;
-};
+}
 
 /**
  * ResponseId type
  *
  * @remarks This type is used to represent the id that is returned from the POST request.
  */
-export type ResponseId = {
+export interface ResponseId {
   id: string;
-};
+}
 
 /**
  * SubmitPolicyResponse type
  *
  * @remarks This type is used to represent the response from the POST request.
  */
-export type PostResponse = {
+export interface PostResponse {
   status: string;
   code: number | null;
   responseId: string | null;
   data: Policy[] | null;
-};
+}

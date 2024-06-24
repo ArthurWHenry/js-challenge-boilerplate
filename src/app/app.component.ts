@@ -66,41 +66,39 @@ export class AppComponent {
   // Handle the file upload
   handleFileUpload: (file: File) => void = (file: File): void => {
     const reader = new FileReader();
-
-    reader.onload = (e: ProgressEvent<FileReader>): void => {
-      const contents = e.target?.result as string;
-
-      // Split the contents of the file by new line or comma and cast to number.
-      try {
-        const parsedNumbers: Policy[] = contents
-          .split(/[\r\n,]+/)
-          .map((number: string): { policyNumber: string; isValid: string } => {
-            const parsedNumber: number = parseInt(number);
-            // Check if the number is valid
-            if (isNaN(parsedNumber)) {
-              throw new Error('Invalid number in file.');
-            }
-            const isValid: boolean = isValidChecksum(number);
-            return {
-              policyNumber: number,
-              isValid: isValid ? 'valid' : 'error',
-            };
-          });
-        this.policies = [...parsedNumbers];
-      } catch (error) {
-        this.alertService.showAlert('Error reading file.', 'warning');
-        return;
-      }
-    };
-
-    reader.onerror = (error: ProgressEvent<FileReader>): void => {
-      this.alertService.showAlert('Error reading file.', 'warning');
-      return;
-    };
-
+    reader.onload = this.processFileContent;
     reader.readAsText(file);
-    this.alertService.showAlert('Successfully read file.', 'success');
   };
+
+  // Process the file contents
+  private processFileContent: (e: ProgressEvent<FileReader>) => void = (
+    e: ProgressEvent<FileReader>
+  ): void => {
+    const contents = e.target?.result as string;
+    try {
+      const policies: Policy[] = this.parsePolicies(contents);
+      this.policies = policies;
+    } catch (error) {
+      this.alertService.showAlert(
+        'Invalid number exists in your file.',
+        'warning'
+      );
+    }
+  };
+
+  // Parse the policies from the file contents
+  private parsePolicies(contents: string): Policy[] {
+    return contents.split(/[\r\n,]+/).map((line: string): Policy => {
+      const policyNumber: string = line.trim();
+      if (!policyNumber || isNaN(Number(policyNumber))) {
+        throw new Error('Invalid number in file.');
+      }
+      return {
+        policyNumber,
+        isValid: isValidChecksum(policyNumber) ? 'valid' : 'error',
+      };
+    });
+  }
 
   // Submit the policy numbers
   submitPolicyNumbers: () => Promise<any> = async (): Promise<any> => {

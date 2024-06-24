@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+// Components
 import { FileUploaderComponent } from './file-uploader.component';
 
 describe('FileUploaderComponent', (): void => {

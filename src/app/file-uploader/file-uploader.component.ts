@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 // Constants
 import { MAX_FILE_SIZE } from '../../constants';
 
 // Helpers
-import { formatBytes } from '../../helpers';
+import { formatBytes, getExtensionFromFileType } from '../../helpers';
 
 // Services
 import { AlertService } from '../alert/alert.service';
@@ -25,13 +25,34 @@ export class FileUploaderComponent {
   @Input() acceptedTypes: string[] = ['.csv'];
   @Input() fileUploadHandler: (file: File) => void = (): void => {};
   @Input() title: string = 'Upload a file';
-  maxSize: number = MAX_FILE_SIZE;
-  maxSizeString: string = formatBytes({ bytes: this.maxSize });
+  maxSizeString: string = formatBytes({ bytes: MAX_FILE_SIZE });
   acceptedTypesString: string = '.csv';
 
   // Set accepted types string on init
   ngOnInit(): void {
     this.acceptedTypesString = this.acceptedTypes.join(', ');
+  }
+
+  isValidFile(file: File): boolean {
+    // Check file type
+    if (!this.acceptedTypes.includes(getExtensionFromFileType(file.type))) {
+      this.alertService.showAlert(
+        `Invalid file type. Please select a ${this.acceptedTypesString} file.`,
+        'warning'
+      );
+      return false;
+    }
+
+    // Check file size
+    if (file.size >= MAX_FILE_SIZE) {
+      this.alertService.showAlert(
+        `File size exceeds ${this.maxSizeString}. Please select a smaller file.`,
+        'warning'
+      );
+      return false;
+    }
+
+    return true;
   }
 
   // Handle file upload
@@ -44,28 +65,12 @@ export class FileUploaderComponent {
 
     const file: File | undefined = target.files?.[0];
 
-    // Check if a file was selected
     if (!file) {
-      return this.alertService.showAlert('No file selected.', 'information');
+      this.alertService.showAlert('No file selected.', 'information');
+      return;
     }
 
-    // Check file type
-    if (file.type !== 'text/csv') {
-      return this.alertService.showAlert(
-        'Invalid file type. Please select a CSV file.',
-        'warning'
-      );
-    }
-
-    // Check file size
-    if (file.size >= MAX_FILE_SIZE) {
-      return this.alertService.showAlert(
-        `File size exceeds ${formatBytes({
-          bytes: MAX_FILE_SIZE,
-        })}. Please select a smaller file.`,
-        'warning'
-      );
-    }
+    if (!this.isValidFile(file)) return;
 
     // Making sure the file upload handler is provided
     if (!this.fileUploadHandler) {
@@ -119,24 +124,12 @@ export class FileUploaderComponent {
       const file = event.dataTransfer.files[0];
 
       if (!file) {
-        return this.alertService.showAlert('No file selected.', 'information');
+        this.alertService.showAlert('No file selected.', 'information');
+        return;
       }
 
-      if (file.type !== 'text/csv') {
-        return this.alertService.showAlert(
-          'Invalid file type. Please select a CSV file.',
-          'warning'
-        );
-      }
-
-      if (file.size >= MAX_FILE_SIZE) {
-        return this.alertService.showAlert(
-          `File size exceeds ${formatBytes({
-            bytes: MAX_FILE_SIZE,
-          })}. Please select a smaller file.`,
-          'warning'
-        );
-      }
+      // Check if the file is valid and shows an alert if not
+      if (!this.isValidFile(file)) return;
 
       this.fileUploadHandler(file);
     }

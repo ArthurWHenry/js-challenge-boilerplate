@@ -1,6 +1,10 @@
 // Types
 import type { Policy, ResponseId, PostResponse } from '../types';
-type PostPolicyNumbersResponse = ResponseId & { policies: Policy[] };
+
+// Local Types
+interface PostPolicyNumbersResponse extends ResponseId {
+  policies: Policy[];
+}
 
 /**
  * Post policy numbers to the server.

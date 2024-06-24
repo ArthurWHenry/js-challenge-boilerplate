@@ -1,22 +1,25 @@
 # KinOcr
 
-## Instructions
+## Project Overview
 
-Your Kin recruiting contact should have sent you a set of instructions for this test.
+This project is designed to read a CSV file (please refer to the [Using the Sample CSV](#using-the-sample-csv) section) with policy numbers. After reading the policy numbers from the file, the no data message will now show a table with the policy numbers and an additional column that shows a result column that shows the validity of that policy number.
 
-## How to use this boilerplate
+## Prerequisites
 
-We are a Typescript-first shop and value your understanding of TS/JS over Angular. If you have never used Angular before, you can find the framework documentation here: https://angular.dev/overview.
+Before you begin, ensure you have met the following requirements:
 
-All of our applications are using the modern versions of Angular, so feel free to use [standalone components](https://angular.dev/essentials/components) and the [new control flow syntax](https://blog.angular.io/meet-angulars-new-control-flow-a02c6eee7843) to make it feel more like React, Vue or Svelt if that's what you are used to.
+- Node.js (16.14.0^)
+- npm (8^)
 
-Feel free to remove routing or upgrade any of the dependencies if you need to.
+Once you have Node.js and npm installed, install the Angular CLI tool globally on your system:
 
-Please use the `./sample.csv` file as input into your application.
+```bash
+npm install -g @angular/cli
+```
 
 ## Installation
 
-Clone the project
+Clone the project:
 
 ```bash
   # via SSH
@@ -26,23 +29,23 @@ Clone the project
   https://github.com/ArthurWHenry/js-challenge-boilerplate.git
 ```
 
-Go to project directory
+Go to project directory:
 
 ```bash
   cd js-challenge-boilerplate
 ```
 
-Install dependencies
+Install dependencies:
 
 ```bash
   npm install
 ```
 
-## Run Locally
+## Running the Application
 
 If you haven't installed the dependencies yet, please refer to the [Installation](#installation) section for instructions on how to do so.
 
-Start the server
+To start the server, run:
 
 ```bash
   npm run start
@@ -51,7 +54,12 @@ Start the server
 ## Running Tests
 
 To run tests, run the following command
+The project includes various tests making sure that the individual components are working and the over functionality of the application is working. To run these tests, execute:
 
 ```bash
   npm run test
 ```
+
+## Using the Sample CSV
+
+To use the `sample.csv` file with the application, after you've set up your local environment, you can either drag and drop the file into the dropzone or click the dropzone to select the file.
