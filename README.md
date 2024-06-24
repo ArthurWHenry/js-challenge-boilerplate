@@ -53,7 +53,6 @@ To start the server, run:
 
 ## Running Tests
 
-To run tests, run the following command
 The project includes various tests making sure that the individual components are working and the over functionality of the application is working. To run these tests, execute:
 
 ```bash
