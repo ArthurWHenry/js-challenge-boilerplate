@@ -8,6 +8,7 @@
 - [Running the Application](#running-the-application)
 - [Running Tests](#running-tests)
 - [Using the Sample CSV](#using-the-sample-csv)
+- [Future Improvements](#future-improvements)
 
 ## Project Overview
 
@@ -91,4 +92,6 @@ To use the `sample.csv` file with the application, after setting up the [local e
 - We can add a section to manually add policy numbers to an existing or new list
 - Adding edit and delete features to the end of the table so that users can make a policy number valid or remove invalid ones
 - In addition to the previous point, we can add an export button to download the updated policy numbers for the user to keep
+- Selectable rows so that we can export specific policy numbers or delete them
 - A search bar at the top of the table where we can look for a specific policy number, or policy numbers with the same prefix
+- Pagination for the table so we can focus on a specific set of numbers so the user doesn't feel overwhelmed with a scrollable list
