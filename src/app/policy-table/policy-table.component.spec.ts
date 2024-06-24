@@ -43,7 +43,7 @@ describe('PolicyTableComponent', (): void => {
   });
 
   it('should not display "No Data to Display" when table has data', (): void => {
-    component.tableData = [{ policyNumber: '123', isValid: 'valid' }];
+    component.tableData = [{ policyNumber: '457508000', isValid: 'valid' }];
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('.no-data')).toBeNull();
@@ -51,8 +51,8 @@ describe('PolicyTableComponent', (): void => {
 
   it('should display correct number of rows for input data', (): void => {
     component.tableData = [
-      { policyNumber: '123', isValid: 'valid' },
-      { policyNumber: '456', isValid: 'error' },
+      { policyNumber: '457508000', isValid: 'valid' },
+      { policyNumber: '664371495', isValid: 'error' },
     ];
     fixture.detectChanges();
     const rows: DebugElement[] = fixture.debugElement.queryAll(
@@ -62,10 +62,10 @@ describe('PolicyTableComponent', (): void => {
   });
 
   it('should display policy number and result in the table', (): void => {
-    component.tableData = [{ policyNumber: '789', isValid: 'error' }];
+    component.tableData = [{ policyNumber: '664371495', isValid: 'error' }];
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.textContent).toContain('789');
+    expect(compiled.textContent).toContain('664371495');
     expect(compiled.textContent).toContain('error');
   });
 });

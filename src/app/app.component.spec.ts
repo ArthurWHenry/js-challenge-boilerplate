@@ -46,7 +46,7 @@ describe('AppComponent', (): void => {
   });
 
   it('clearPolicyNumbers should empty the policies array', (): void => {
-    component.policies = [{ policyNumber: '123', isValid: 'valid' }];
+    component.policies = [{ policyNumber: '457508000', isValid: 'valid' }];
     component.clearPolicyNumbers();
     expect(component.policies.length).toBe(0);
   });
@@ -72,7 +72,7 @@ describe('AppComponent', (): void => {
 
   it('handleFileUpload should process a file upload', (): void => {
     const spy = spyOn(component as any, 'handleFileUpload').and.callThrough();
-    const file = new File(['123,345'], 'policies.txt', {
+    const file = new File(['457508000,664371495'], 'policies.csv', {
       type: 'text/csv',
     });
     component.handleFileUpload(file);
@@ -80,11 +80,11 @@ describe('AppComponent', (): void => {
   });
 
   it('parsePolicies should correctly parse policies from string', (): void => {
-    const testString = '123\n456';
+    const testString = '457508000\n664371495';
     const result: Policy[] = component['parsePolicies'](testString);
     expect(result.length).toBe(2);
-    expect(result[0].policyNumber).toBe('123');
-    expect(result[1].policyNumber).toBe('456');
+    expect(result[0].policyNumber).toBe('457508000');
+    expect(result[1].policyNumber).toBe('664371495');
   });
 
   it('processFileContent should show a warning alert on invalid data', (): void => {
