@@ -16,9 +16,9 @@
         [class.valid]="policy.isValid === 'valid'"
         [class.invalid]="policy.isValid === 'error'"
       >
-        <td class="table-row-index-cell">{{ i + 1 }}</td>
-        <td class="table-row-policy-cell">{{ policy.policyNumber }}</td>
-        <td class="table-row-policy-cell">{{ policy.isValid }}</td>
+        <td>{{ i + 1 }}</td>
+        <td>{{ policy.policyNumber }}</td>
+        <td>{{ policy.isValid }}</td>
       </tr>
     </tbody>
   </table>

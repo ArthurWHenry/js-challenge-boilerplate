@@ -12,6 +12,7 @@ import { Policy } from '../../types';
   styleUrl: './policy-table.component.scss',
 })
 export class PolicyTableComponent {
+  // Properties
   @Input() tableData: Policy[] = [];
   columns: string[] = ['', 'Policy #', 'Result'];
 }

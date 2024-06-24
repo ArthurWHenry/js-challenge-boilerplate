@@ -1,13 +1,17 @@
 @import "../../scss/variables.scss";
 
 .button {
+  // layout
+  padding: $--space-200 $--space-300;
+
+  // style
   border-radius: $--border-radius-200;
   font-size: $--font-size-100;
   font-weight: $--font-weight-500;
-  padding: $--space-200 $--space-300;
   width: 100%;
 
   &__primary {
+    // style
     background-color: $--color-secondary;
     border: none;
     color: $--color-neutral-white;

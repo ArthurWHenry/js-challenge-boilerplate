@@ -17,6 +17,7 @@
   color: $--color-secondary-300;
 
   &__message {
+    // layout
     display: flex;
     flex-direction: column;
     gap: $--space-100;

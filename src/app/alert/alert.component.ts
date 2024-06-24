@@ -13,6 +13,7 @@ import type { Alert, AlertVariant } from '../../types';
   styleUrl: './alert.component.scss',
 })
 export class AlertComponent {
+  // Properties
   @Input() variant: AlertVariant = 'information';
   classes: string = `alert alert__${this.variant}`;
   isVisible: boolean = false;

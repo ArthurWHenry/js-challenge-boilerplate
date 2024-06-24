@@ -52,7 +52,7 @@
         scroll-snap-align: start;
       }
 
-      // Combine hover states for .valid and .invalid
+      // Combined hover states for .valid and .invalid
       &.valid,
       &.invalid {
         &:hover {

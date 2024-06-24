@@ -35,20 +35,22 @@ import { AlertService } from './alert/alert.service';
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
+  // Inject the AlertService
   constructor(private alertService: AlertService) {}
 
-  columns: string[] = ['', 'Policy #', 'Result'];
+  // Properties
   private _policies: Policy[] = [];
-  title: string = 'kin-ocr';
   submitButtonDisabled: boolean = true;
+  title: string = 'kin-ocr';
 
+  // Get the policies array
   get policies(): Policy[] {
     return this._policies;
   }
 
+  // Set the policies array and update the submit button disabled property
   set policies(value: Policy[]) {
     this._policies = value;
-    // Update submitButtonDisabled based on the new policies array
     this.submitButtonDisabled = this._policies.length === 0;
   }
 
@@ -74,9 +76,7 @@ export class AppComponent {
           .split(/[\r\n,]+/)
           .map((number: string): { policyNumber: string; isValid: string } => {
             const parsedNumber: number = parseInt(number);
-            // We only want to check if it's a number. We don't want to show
-            // this to the user because if we have a policy number that starts
-            // with 0, it will be removed.
+            // Check if the number is valid
             if (isNaN(parsedNumber)) {
               throw new Error('Invalid number in file.');
             }
@@ -89,17 +89,20 @@ export class AppComponent {
         this.policies = [...parsedNumbers];
       } catch (error) {
         this.alertService.showAlert('Error reading file.', 'warning');
+        return;
       }
     };
 
     reader.onerror = (error: ProgressEvent<FileReader>): void => {
       this.alertService.showAlert('Error reading file.', 'warning');
+      return;
     };
 
     reader.readAsText(file);
     this.alertService.showAlert('Successfully read file.', 'success');
   };
 
+  // Submit the policy numbers
   submitPolicyNumbers: () => Promise<any> = async (): Promise<any> => {
     const response: PostResponse = await postPolicyNumbers({
       policies: this.policies,

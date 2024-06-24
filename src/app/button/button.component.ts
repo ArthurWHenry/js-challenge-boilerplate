@@ -11,6 +11,7 @@ import type { ButtonVariant } from '../../types';
   styleUrl: './button.component.scss',
 })
 export class ButtonComponent {
+  // Properties
   @Input() disabled: boolean = false;
   @Input() onClick: () => void = (): void => {};
   @Input() text: string = 'Submit';
