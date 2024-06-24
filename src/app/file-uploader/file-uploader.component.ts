@@ -132,6 +132,7 @@ export class FileUploaderComponent {
       if (!this.isValidFile(file)) return;
 
       this.fileUploadHandler(file);
+      this.clearFileInput();
     }
   }
 }

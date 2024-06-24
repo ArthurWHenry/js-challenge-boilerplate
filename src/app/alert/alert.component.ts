@@ -1,5 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
+
+// Services
 import { AlertService } from './alert.service';
 
 // Types
@@ -14,7 +16,15 @@ import type { Alert, AlertVariant } from '../../types';
 })
 export class AlertComponent {
   // Properties
-  @Input() variant: AlertVariant = 'information';
+  private _variant: AlertVariant = 'information';
+  get variant(): AlertVariant {
+    return this._variant;
+  }
+  @Input()
+  set variant(value: AlertVariant) {
+    this._variant = value;
+    this.updateClasses();
+  }
   classes: string = `alert alert__${this.variant}`;
   isVisible: boolean = false;
   message: string = '';
@@ -48,9 +58,18 @@ export class AlertComponent {
     }, timeout);
   }
 
-  // Close the alert
+  // Close the alert clear alert information
   close(): void {
     clearTimeout(this.timeout);
     this.isVisible = false;
+    this.message = '';
+    this.title = '';
+  }
+
+  // Update the classes based on the variant
+  private updateClasses(): void {
+    this.classes = `alert alert__${this.variant}`;
+    this.title =
+      this.variant.charAt(0).toUpperCase() + this.variant.slice(1) + ' Alert';
   }
 }

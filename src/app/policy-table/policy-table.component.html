@@ -11,7 +11,7 @@
     </thead>
     <tbody>
       <tr
-        class="table-row"
+        data-testid="table-row"
         *ngFor="let policy of tableData; let i = index"
         [class.valid]="policy.isValid === 'valid'"
         [class.invalid]="policy.isValid === 'error'"
