@@ -1,112 +1,119 @@
 import { CommonModule } from '@angular/common';
-import { Component, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+
+// API
+import { postPolicyNumbers } from '../api/submit-policies';
+
+// Components
+import { AlertComponent } from './alert/alert.component';
+import { ButtonComponent } from './button/button.component';
+import { FileUploaderComponent } from './file-uploader/file-uploader.component';
+import { PolicyTableComponent } from './policy-table/policy-table.component';
 
 // Helpers
 import { isValidChecksum } from '../helpers';
-import { Policy, ResponseId } from '../types';
 
-const MAX_FILE_SIZE = 2097152; // 2MB
+// Types
+import { Policy, PostResponse } from '../types';
+
+// Services
+import { AlertService } from './alert/alert.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CommonModule],
+  imports: [
+    RouterOutlet,
+    CommonModule,
+    AlertComponent,
+    ButtonComponent,
+    FileUploaderComponent,
+    PolicyTableComponent,
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
-  @Output() policies: { policyNumber: string; isValid: string }[] = [];
-  @Output() title: string = 'kin-ocr';
+  // Inject the AlertService
+  constructor(private alertService: AlertService) {}
 
-  onFileSelected(event: Event): void {
-    const target = event.target as HTMLInputElement;
+  // Properties
+  private _policies: Policy[] = [];
+  submitButtonDisabled: boolean = true;
+  title: string = 'kin-ocr';
 
-    if (!target) {
-      alert('Error reading file.');
-      return;
-    }
+  // Get the policies array
+  get policies(): Policy[] {
+    return this._policies;
+  }
 
-    const file: File | undefined = target.files?.[0];
+  // Set the policies array and update the submit button disabled property
+  set policies(value: Policy[]) {
+    this._policies = value;
+    this.submitButtonDisabled = this._policies.length === 0;
+  }
 
-    if (!file) {
-      alert('No file selected.');
-      return;
-    }
+  // Clear the policies array
+  clearPolicyNumbers: () => void = (): void => {
+    this.policies = [];
+    this.alertService.showAlert(
+      'Data cleared. Please upload a new file.',
+      'information'
+    );
+  };
 
-    if (file.type !== 'text/csv') {
-      alert('Invalid file type. Please select a CSV file.');
-      return;
-    }
-
-    // If file is of 2MB or more, alert the user and return.
-    if (file.size >= MAX_FILE_SIZE) {
-      alert('File size exceeds 2MB. Please select a smaller file.');
-      return;
-    }
-
+  // Handle the file upload
+  handleFileUpload: (file: File) => void = (file: File): void => {
     const reader = new FileReader();
-
-    reader.onload = (e: ProgressEvent<FileReader>): void => {
-      const contents = e.target?.result as string;
-
-      // Split the contents of the file by new line or comma and cast to number.
-      try {
-        this.policies = contents
-          .split(/[\r\n,]+/)
-          .map((number: string): { policyNumber: string; isValid: string } => {
-            const parsedNumber: number = parseInt(number);
-            // We only want to check if it's a number. We don't want to show
-            // this to the user because if we have a policy number that starts
-            // with 0, it will be removed.
-            if (isNaN(parsedNumber)) {
-              throw new Error('Invalid number in file.');
-            }
-            const isValid: boolean = isValidChecksum(number);
-            return {
-              policyNumber: number,
-              isValid: isValid ? 'valid' : 'error',
-            };
-          });
-      } catch (error) {
-        alert(error);
-        return;
-      }
-    };
-
+    reader.onload = this.processFileContent;
     reader.readAsText(file);
-    return;
+  };
+
+  // Process the file contents
+  private processFileContent: (e: ProgressEvent<FileReader>) => void = (
+    e: ProgressEvent<FileReader>
+  ): void => {
+    const contents = e.target?.result as string;
+    try {
+      const policies: Policy[] = this.parsePolicies(contents);
+      this.policies = policies;
+    } catch (error) {
+      this.alertService.showAlert(
+        'Invalid number exists in your file.',
+        'warning'
+      );
+    }
+  };
+
+  // Parse the policies from the file contents
+  private parsePolicies(contents: string): Policy[] {
+    return contents.split(/[\r\n,]+/).map((line: string): Policy => {
+      const policyNumber: string = line.trim();
+      if (!policyNumber || isNaN(Number(policyNumber))) {
+        throw new Error('Invalid number in file.');
+      }
+      return {
+        policyNumber,
+        isValid: isValidChecksum(policyNumber) ? 'valid' : 'error',
+      };
+    });
   }
 
-  async submitPolicyNumbers(): Promise<any> {
-    if (!this.policies.length) {
-      window.alert('No policy numbers available.');
+  // Submit the policy numbers
+  submitPolicyNumbers: () => Promise<any> = async (): Promise<any> => {
+    const response: PostResponse = await postPolicyNumbers({
+      policies: this.policies,
+    });
+
+    if (response.status === 'error' || !response.responseId) {
+      this.alertService.showAlert('Error submitting policy numbers.', 'error');
       return;
     }
-    const response: ResponseId & Policy[] = await fetch(
-      'https://jsonplaceholder.typicode.com/posts',
-      {
-        method: 'POST',
-        body: JSON.stringify({
-          policies: [...this.policies],
-        }),
-        headers: {
-          'Content-type': 'application/json; charset=UTF-8',
-        },
-      }
-    )
-      .then((response: Response): Promise<ResponseId & Policy[]> => {
-        if (!response.ok) {
-          window.alert('Error sending data to server.');
-          // throw new Error('Error sending data to server.');
-        }
-        return response.json();
-      })
-      .then(
-        (response: ResponseId & Policy[]): ResponseId & Policy[] => response
-      );
 
-    window.alert('Data sent successfully. ID: ' + response.id);
-    return response.id;
-  }
+    this.alertService.showAlert(
+      `Policy numbers submitted successfully. (id: ${response.responseId})`,
+      'success'
+    );
+  };
 }

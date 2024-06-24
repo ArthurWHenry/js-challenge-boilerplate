@@ -1,0 +1,30 @@
+<div class="table__wrapper">
+  <table
+    aria-label="Table with Policy Numbers"
+    class="table"
+    *ngIf="tableData.length > 0; else noData"
+  >
+    <thead class="table-header" aria-label="Header for Policy data">
+      <tr>
+        <th *ngFor="let column of columns">{{ column }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        class="table-row"
+        *ngFor="let policy of tableData; let i = index"
+        [class.valid]="policy.isValid === 'valid'"
+        [class.invalid]="policy.isValid === 'error'"
+      >
+        <td>{{ i + 1 }}</td>
+        <td>{{ policy.policyNumber }}</td>
+        <td>{{ policy.isValid }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <ng-template #noData>
+    <div class="table__no-data">
+      <p>No Data to Display</p>
+    </div>
+  </ng-template>
+</div>
